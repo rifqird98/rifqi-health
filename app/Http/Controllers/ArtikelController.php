@@ -16,7 +16,7 @@ class ArtikelController extends Controller
     {
         $data = Artikel::with('category')->paginate(10);
         $i = 1;
-        return view('pages.Artikel.index', compact('data','i'));
+        return view('pages.artikel.index', compact('data','i'));
     }
 
     /**

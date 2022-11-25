@@ -18,7 +18,7 @@ class Admin
     public function handle(Request $request, Closure $next)
     {
         if (Auth::user()->role != 'admin') {
-            return redirect('login');
+            return redirect()->route('artikel.index');
         }
         
         return $next($request);
