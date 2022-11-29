@@ -39,53 +39,43 @@ class HomeController extends Controller
         $tinggi = $request->tinggi/100;
         $dbmi = $berat/($tinggi*$tinggi);
         
-        //untuk menghitung bmi
-        $a = new konsul($request->berat, $request->tinggi);
-        $b = new kgratis($request->tahunlahir, $dbmi);
+        // hobi
         $c = $request->hobi;
-        // $a->bmi();
-        // $a->obes();
+        $hobi = explode(',', $c);
+        $hb = count($hobi)-1;
+        
+         
+
+        //untuk menghitung bmi
+        $b = new kgratis($request->tahunlahir, $dbmi);
+        $obes= $this->obesitas($dbmi);
         $data = [
-            'bmi' => $a->bmi(),
-            'obes' => $a->obes(),
+            'bmi' => $dbmi,
+            'obes' => $obes,
             'umur' => $b->umur_(),
             'konsul' => $b->konsul(),
-            'hobi' => $c
+            'hobi' => $hobi[rand(0, $hb)],
         ];
 
         return view('home', compact('data'));
     }
-}
 
-class hitung
-{
-    public function __construct($berat, $tinggi)
+    public function obesitas($db)
     {
-        $this->berat = $berat;
-        $this->tinggi = $tinggi / 100;
-    }
-
-    public function bmi()
-    {
-        return $this->berat / ($this->tinggi * $this->tinggi);
-    }
-}
-
-class konsul extends hitung
-{
-    public function obes()
-    {
-        $dbmi = $this->bmi();
-
-        if ($dbmi < 18.5) {
+        
+        if ($db < 18.5) {
             return 'kurus';
-        } elseif ($dbmi <= 29.5) {
+        } else if ($db < 22.9) {
+            return 'normal';
+        } else if($db > 29.9) {
             return 'gemuk';
-        } else if($dbmi > 30) {
+        }else if ($db >30) {
             return 'obesitas';
         }
     }
 }
+
+
 
 class umur{
     public function __construct($tahun, $bmi)
